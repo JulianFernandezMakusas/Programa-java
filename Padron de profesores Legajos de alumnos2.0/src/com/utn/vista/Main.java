@@ -20,6 +20,8 @@ import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 public class Main {
 
 	public static void main(String[] args) {
+		Alumno alumno2 = null;
+		Profesor profesor2 = null;
 		int casos = 0;
 		int siNo2 = 0;
 		String nombre;
@@ -89,7 +91,7 @@ public class Main {
 					lista.add(profesor);
 					System.out.println(profesor.hashCode());
 					ObjectOutputStream iProfesor = new ObjectOutputStream(Files.newOutputStream(prof));
-					lProfesor.writeObject(profesor);
+					lProfesor.writeObject(profesor2);
 					break;
 				// alumno
 				case 1:
@@ -114,7 +116,7 @@ public class Main {
 					lista.add(alumno);
 					System.out.println(alumno.hashCode());
 					ObjectOutputStream iAlumno = new ObjectOutputStream(Files.newOutputStream(alumn));
-					lAlumno.writeObject(alumno);
+					lAlumno.writeObject(alumno2);
 					break;
 				default:
 				}
@@ -126,29 +128,29 @@ public class Main {
 			ObjectInputStream in = new ObjectInputStream(Files.newInputStream(prof));
 			try {
 				while (true) {
-					profesor = (Profesor) in.readObject();
+					profesor2 = (Profesor) in.readObject();
 					JOptionPane.showMessageDialog(null, profesor.getNombre());
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Hola mundo");
 		}
 		try {
 			ObjectInputStream in = new ObjectInputStream(Files.newInputStream(alumn));
 			while (true) {
 				try {
-					Alumno alumno2 = (Alumno) in.readObject();
-				} catch (ClassNotFoundException e) {
+					alumno2 = (Alumno) in.readObject();					
+					JOptionPane.showMessageDialog(null, alumno.getNombre());
+				} catch ( ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, alumno.getNombre());
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Hola mundo");
 		}
 	}
 }
