@@ -91,7 +91,7 @@ public class Main {
 					lista.add(profesor);
 					System.out.println(profesor.hashCode());
 					ObjectOutputStream iProfesor = new ObjectOutputStream(Files.newOutputStream(prof));
-					lProfesor.writeObject(profesor2);
+					iProfesor.writeObject(profesor2);
 					break;
 				// alumno
 				case 1:
@@ -116,7 +116,7 @@ public class Main {
 					lista.add(alumno);
 					System.out.println(alumno.hashCode());
 					ObjectOutputStream iAlumno = new ObjectOutputStream(Files.newOutputStream(alumn));
-					lAlumno.writeObject(alumno2);
+					iAlumno.writeObject(alumno2);
 					break;
 				default:
 				}
@@ -126,6 +126,7 @@ public class Main {
 		}
 		try {
 			ObjectInputStream in = new ObjectInputStream(Files.newInputStream(prof));
+			JOptionPane.showMessageDialog(null, "lee el archivo", "programa", 0);
 			try {
 				while (true) {
 					profesor2 = (Profesor) in.readObject();
