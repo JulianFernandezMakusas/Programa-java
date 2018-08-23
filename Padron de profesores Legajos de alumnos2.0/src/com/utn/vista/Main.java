@@ -12,16 +12,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import static java.nio.file.StandardOpenOption.*;
 
 import javax.swing.JOptionPane;
-
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Default;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Alumno alumno2 = null;
-		Profesor profesor2 = null;
 		int casos = 0;
 		int siNo2 = 0;
 		String nombre;
@@ -40,29 +37,18 @@ public class Main {
 		Persona alumno = null;
 		String lines = " ";
 		Path alumn = Paths
-				.get("C:\\Users\\Raul\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Alumno.ser");
+				.get("C:\\Users\\Java\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Alumno.ser");
 		Path prof = Paths
-				.get("C:\\Users\\Raul\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Profesor.ser");
+				.get("C:\\Users\\Java\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Profesor.ser");
 		JOptionPane.showMessageDialog(null, "Bienvenido", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-		int archivos = JOptionPane.showConfirmDialog(null, "¿Desea crear archivos?");
-		if (archivos == 0) {
-			try {
-				Files.createFile(alumn);
-				Files.createFile(prof);
-			} catch (IOException e) {
-				System.out.println("Error: " + e);
-			}
-		} else if (archivos == 1) {
-			JOptionPane.showMessageDialog(null, "OK");
-		}
-		ObjectOutputStream lAlumno = null;
-		ObjectOutputStream lProfesor = null;
-		try {
-			lAlumno = new ObjectOutputStream(Files.newOutputStream(alumn));
-			lProfesor = new ObjectOutputStream(Files.newOutputStream(prof));
-		} catch (IOException e) {
-			System.out.println("Error: " + e);
-		}
+		 ObjectOutputStream lAlumno = null;
+		 ObjectOutputStream lProfesor = null;
+		 try {
+			 lAlumno = new ObjectOutputStream(Files.newOutputStream(alumn, CREATE, APPEND));
+			 lProfesor = new ObjectOutputStream(Files.newOutputStream(prof, CREATE, APPEND));
+		 } catch (IOException e) {
+			 System.out.println("Error: " + e);
+		 }
 		while (JOptionPane.showOptionDialog(null, "¿Desea ingresar informaciòn?", "Informacion", siNo2,
 				JOptionPane.INFORMATION_MESSAGE, null, siNo, 0) == 0) {
 			int seleccion = JOptionPane.showOptionDialog(null, "Selecione una opcion", "Informaciòn", casos,
@@ -89,9 +75,9 @@ public class Main {
 						}
 					}
 					lista.add(profesor);
-					System.out.println(profesor.hashCode());
-					lProfesor = new ObjectOutputStream(Files.newOutputStream(prof));
-					lProfesor.writeObject(profesor2);
+					 System.out.println(profesor.hashCode());
+					 lProfesor.writeObject(profesor);
+					 lAlumno.reset();
 					break;
 				// alumno
 				case 1:
@@ -113,10 +99,10 @@ public class Main {
 							}
 						}
 					}
-					lista.add(alumno);
-					System.out.println(alumno.hashCode());
-					lAlumno = new ObjectOutputStream(Files.newOutputStream(alumn));
-					lAlumno.writeObject(alumno2);
+					 lista.add(alumno);
+					 System.out.println(alumno.hashCode());
+					 lAlumno.writeObject(alumno);
+					 lAlumno.reset();
 					break;
 				default:
 				}
@@ -124,34 +110,39 @@ public class Main {
 				JOptionPane.showMessageDialog(null, "Error, el programa se cerrara.");
 			}
 		}
+		 try {
+			 lProfesor.close();
+			 lAlumno.close();
+		 } catch (IOException e1) {
+			 System.out.println("Error al cerrar archivos: "+e1.toString());
+		 }
 		try {
-			ObjectInputStream in = new ObjectInputStream(Files.newInputStream(prof));
-			JOptionPane.showMessageDialog(null, "lee el archivo", "programa", 0);
+			ObjectInputStream lectorProfesor = new ObjectInputStream(Files.newInputStream(prof));
 			try {
 				while (true) {
-					profesor2 = (Profesor) in.readObject();
+					profesor = (Profesor) lectorProfesor.readObject();
+					JOptionPane.showMessageDialog(null, "Profesor", "Programa", 0);
 					JOptionPane.showMessageDialog(null, profesor.getNombre());
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
-			System.out.println("Hola mundo");
+			System.out.println(e.toString());
 		}
 		try {
-			ObjectInputStream in = new ObjectInputStream(Files.newInputStream(alumn));
+			ObjectInputStream lectorAlumno = new ObjectInputStream(Files.newInputStream(alumn));
 			while (true) {
 				try {
-					alumno2 = (Alumno) in.readObject();					
+					alumno = (Alumno) lectorAlumno.readObject();
+					JOptionPane.showMessageDialog(null, "Alumno", "Programa", 0);
 					JOptionPane.showMessageDialog(null, alumno.getNombre());
-				} catch ( ClassNotFoundException e) {
-					// TODO Auto-generated catch block
+				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
 			}
-
 		} catch (IOException e) {
-			System.out.println("Hola mundo");
+			System.out.println(e.toString());
 		}
 	}
 }
