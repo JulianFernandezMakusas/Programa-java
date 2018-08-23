@@ -90,8 +90,8 @@ public class Main {
 					}
 					lista.add(profesor);
 					System.out.println(profesor.hashCode());
-					ObjectOutputStream iProfesor = new ObjectOutputStream(Files.newOutputStream(prof));
-					iProfesor.writeObject(profesor2);
+					lProfesor = new ObjectOutputStream(Files.newOutputStream(prof));
+					lProfesor.writeObject(profesor2);
 					break;
 				// alumno
 				case 1:
@@ -115,8 +115,8 @@ public class Main {
 					}
 					lista.add(alumno);
 					System.out.println(alumno.hashCode());
-					ObjectOutputStream iAlumno = new ObjectOutputStream(Files.newOutputStream(alumn));
-					iAlumno.writeObject(alumno2);
+					lAlumno = new ObjectOutputStream(Files.newOutputStream(alumn));
+					lAlumno.writeObject(alumno2);
 					break;
 				default:
 				}
