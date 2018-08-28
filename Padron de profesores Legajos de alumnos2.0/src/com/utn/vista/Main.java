@@ -1,10 +1,5 @@
 package com.utn.vista;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,6 +14,8 @@ import javax.swing.JOptionPane;
 public class Main {
 
 	public static void main(String[] args) {
+		boolean whileProfesor = true;
+		boolean whileAlumno = true;
 		int casos = 0;
 		int siNo2 = 0;
 		String nombre;
@@ -35,11 +32,10 @@ public class Main {
 		Persona p;
 		Persona profesor = null;
 		Persona alumno = null;
-		String lines = " ";
 		Path alumn = Paths
-				.get("C:\\Users\\Java\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Alumno.ser");
+				.get("C:\\Users\\Raul\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Alumno.ser");
 		Path prof = Paths
-				.get("C:\\Users\\Java\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Profesor.ser");
+				.get("C:\\Users\\Raul\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Profesor.ser");
 		JOptionPane.showMessageDialog(null, "Bienvenido", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
 		 ObjectOutputStream lAlumno = null;
 		 ObjectOutputStream lProfesor = null;
@@ -119,7 +115,7 @@ public class Main {
 		try {
 			ObjectInputStream lectorProfesor = new ObjectInputStream(Files.newInputStream(prof));
 			try {
-				while (true) {
+				while (whileProfesor != false) {
 					profesor = (Profesor) lectorProfesor.readObject();
 					JOptionPane.showMessageDialog(null, "Profesor", "Programa", 0);
 					JOptionPane.showMessageDialog(null, profesor.getNombre());
@@ -128,11 +124,11 @@ public class Main {
 				e.printStackTrace();
 			}
 		} catch (IOException e) {
-			System.out.println(e.toString());
+			whileProfesor = true;
 		}
 		try {
 			ObjectInputStream lectorAlumno = new ObjectInputStream(Files.newInputStream(alumn));
-			while (true) {
+			while (whileAlumno != false) {
 				try {
 					alumno = (Alumno) lectorAlumno.readObject();
 					JOptionPane.showMessageDialog(null, "Alumno", "Programa", 0);
@@ -142,7 +138,7 @@ public class Main {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println(e.toString());
+			whileAlumno = false;
 		}
 	}
 }
