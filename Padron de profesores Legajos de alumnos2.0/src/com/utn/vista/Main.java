@@ -33,18 +33,18 @@ public class Main {
 		Persona profesor = null;
 		Persona alumno = null;
 		Path alumn = Paths
-				.get("C:\\Users\\Raul\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Alumno.ser");
+				.get("C:\\Users\\Java\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Alumno.ser");
 		Path prof = Paths
-				.get("C:\\Users\\Raul\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Profesor.ser");
+				.get("C:\\Users\\Java\\Desktop\\Padron de profesores Legajos de alumnos2.0\\Datos_Profesor.ser");
 		JOptionPane.showMessageDialog(null, "Bienvenido", "Bienvenido", JOptionPane.INFORMATION_MESSAGE);
-		 ObjectOutputStream lAlumno = null;
-		 ObjectOutputStream lProfesor = null;
-		 try {
-			 lAlumno = new ObjectOutputStream(Files.newOutputStream(alumn, CREATE, APPEND));
-			 lProfesor = new ObjectOutputStream(Files.newOutputStream(prof, CREATE, APPEND));
-		 } catch (IOException e) {
-			 System.out.println("Error: " + e);
-		 }
+		ObjectOutputStream lAlumno = null;
+		ObjectOutputStream lProfesor = null;
+		try {
+			lAlumno = new ObjectOutputStream(Files.newOutputStream(alumn, CREATE, APPEND));
+			lProfesor = new ObjectOutputStream(Files.newOutputStream(prof, CREATE, APPEND));
+		} catch (IOException e) {
+			System.out.println("Error: " + e);
+		}
 		while (JOptionPane.showOptionDialog(null, "¿Desea ingresar informaciòn?", "Informacion", siNo2,
 				JOptionPane.INFORMATION_MESSAGE, null, siNo, 0) == 0) {
 			int seleccion = JOptionPane.showOptionDialog(null, "Selecione una opcion", "Informaciòn", casos,
@@ -71,9 +71,9 @@ public class Main {
 						}
 					}
 					lista.add(profesor);
-					 System.out.println(profesor.hashCode());
-					 lProfesor.writeObject(profesor);
-					 lAlumno.reset();
+					System.out.println(profesor.hashCode());
+					lProfesor.writeObject(profesor);
+					lProfesor.reset();
 					break;
 				// alumno
 				case 1:
@@ -95,10 +95,10 @@ public class Main {
 							}
 						}
 					}
-					 lista.add(alumno);
-					 System.out.println(alumno.hashCode());
-					 lAlumno.writeObject(alumno);
-					 lAlumno.reset();
+					lista.add(alumno);
+					System.out.println(alumno.hashCode());
+					lAlumno.writeObject(alumno);
+					lAlumno.reset();
 					break;
 				default:
 				}
@@ -106,12 +106,12 @@ public class Main {
 				JOptionPane.showMessageDialog(null, "Error, el programa se cerrara.");
 			}
 		}
-		 try {
-			 lProfesor.close();
-			 lAlumno.close();
-		 } catch (IOException e1) {
-			 System.out.println("Error al cerrar archivos: "+e1.toString());
-		 }
+		try {
+			lProfesor.close();
+			lAlumno.close();
+		} catch (IOException e1) {
+			System.out.println("Error al cerrar archivos: " + e1.toString());
+		}
 		try {
 			ObjectInputStream lectorProfesor = new ObjectInputStream(Files.newInputStream(prof));
 			try {
@@ -119,6 +119,7 @@ public class Main {
 					profesor = (Profesor) lectorProfesor.readObject();
 					JOptionPane.showMessageDialog(null, "Profesor", "Programa", 0);
 					JOptionPane.showMessageDialog(null, profesor.getNombre());
+					JOptionPane.showMessageDialog(null, profesor.getDni());
 				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -133,6 +134,7 @@ public class Main {
 					alumno = (Alumno) lectorAlumno.readObject();
 					JOptionPane.showMessageDialog(null, "Alumno", "Programa", 0);
 					JOptionPane.showMessageDialog(null, alumno.getNombre());
+					JOptionPane.showMessageDialog(null, alumno.getDni());
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
