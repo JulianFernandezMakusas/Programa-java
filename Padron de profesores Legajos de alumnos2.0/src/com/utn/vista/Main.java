@@ -1,5 +1,6 @@
 package com.utn.vista;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -121,11 +122,13 @@ public class Main {
 					JOptionPane.showMessageDialog(null, profesor.getNombre());
 					JOptionPane.showMessageDialog(null, profesor.getDni());
 				}
+				}catch (EOFException e) {
+					System.out.println("se acabo el archivo master");
+					whileProfesor = true;
+				}
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			whileProfesor = true;
+			} catch (IOException e) {
 		}
 		try {
 			ObjectInputStream lectorAlumno = new ObjectInputStream(Files.newInputStream(alumn));
@@ -139,8 +142,10 @@ public class Main {
 					e.printStackTrace();
 				}
 			}
-		} catch (IOException e) {
+		}catch(EOFException e) {
+			System.out.println("Se acabo master");
 			whileAlumno = false;
+		}catch (IOException e) {
 		}
 	}
 }
